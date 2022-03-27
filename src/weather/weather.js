@@ -19,12 +19,12 @@ export default class Weather {
 		return this.#location;
 	}
 
-	async fetchWeather(icon) {
+	async fetchWeather(icon, iconText) {
 		try {
 			const childNodes = this.#removeChildNodes();
 			this.#bodyNode.classList.add("loader");
 			this.#weather = await fetch(
-				"https://api.openweathermap.org/data/2.5/weather?q=Texas&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
+				"https://api.openweathermap.org/data/2.5/weather?q=Brooklyn&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
 				{
 					mode: "cors",
 				}
@@ -38,10 +38,11 @@ export default class Weather {
 				` http://openweathermap.org/img/wn/${iconId}@2x.png`
 			);
 			icon.addAttributes([iconSrcAttr]);
+			iconText.setTextContent(this.#weather.weather[0].description);
 
 			this.#addChildren(childNodes);
 			this.#bodyNode.classList.remove("loader");
-			console.log(iconId);
+			console.log(this.#weather.weather[0].description);
 		} catch (e) {
 			console.log(e);
 		}
