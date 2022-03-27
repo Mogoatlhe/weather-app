@@ -1,4 +1,5 @@
 import "regenerator-runtime/runtime";
+import Attribute from "../html/attribute";
 
 export default class Weather {
 	#weather;
@@ -18,20 +19,29 @@ export default class Weather {
 		return this.#location;
 	}
 
-	async setWeather() {
+	async fetchWeather(icon) {
 		try {
 			const childNodes = this.#removeChildNodes();
 			this.#bodyNode.classList.add("loader");
 			this.#weather = await fetch(
-				"https://api.openweathermap.org/data/2.5/weather?q=Pretoria&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
+				"https://api.openweathermap.org/data/2.5/weather?q=Texas&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
 				{
 					mode: "cors",
 				}
 			);
 
 			this.#weather = await this.#weather.json();
+
+			const iconId = this.#weather.weather[0].icon;
+			const iconSrcAttr = new Attribute(
+				"src",
+				` http://openweathermap.org/img/wn/${iconId}@2x.png`
+			);
+			icon.addAttributes([iconSrcAttr]);
+
 			this.#addChildren(childNodes);
 			this.#bodyNode.classList.remove("loader");
+			console.log(iconId);
 		} catch (e) {
 			console.log(e);
 		}

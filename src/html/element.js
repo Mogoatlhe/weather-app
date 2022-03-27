@@ -4,12 +4,15 @@ export default class Element {
 	constructor(name, attributes, className, textContent) {
 		this.#node = document.createElement(name);
 
+		this.addAttributes(attributes);
+		this.addClass(className);
+		this.setTextContent(textContent);
+	}
+
+	addAttributes(attributes) {
 		attributes.forEach((attr) =>
 			this.#node.setAttribute(attr.getName(), attr.getValue())
 		);
-
-		this.addClass(className);
-		this.setTextContent(textContent);
 	}
 
 	addClass(className) {

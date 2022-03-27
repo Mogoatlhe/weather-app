@@ -2,6 +2,7 @@ import Div from "./html/div";
 import Weather from "./weather/weather";
 import Attribute from "./html/attribute";
 import "./style/style.css";
+import Image from "./html/image";
 
 const content = document.getElementById("content");
 
@@ -20,12 +21,19 @@ const iconDetailsDivAttrArr = [iconDetailsDivIdAttr];
 const iconDetailsDiv = new Div(iconDetailsDivAttrArr);
 const iconDetailsDivNode = iconDetailsDiv.getDiv();
 
+const iconIdAttr = new Attribute("id", "weather-icon");
+const iconAltAttr = new Attribute("alt", "weather icon");
+const iconAttrArr = [iconIdAttr, iconAltAttr];
+const icon = new Image(iconAttrArr);
+const iconNode = icon.getImage();
+
 const weather = new Weather();
-weather.setWeather();
+weather.fetchWeather(icon);
 locationDivNode.addEventListener("click", () => {
-	weather.setWeather();
+	weather.fecthWeather(icon);
 });
 
+iconDetailsDivNode.append(iconNode);
 weatherDivNode.append(iconDetailsDivNode);
 content.append(locationDivNode);
 content.append(weatherDivNode);

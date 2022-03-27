@@ -44,4 +44,6 @@ body.loader {
 	width: 10%;
 	height: 30vh;
 	border: red 1px solid;
+	display: grid;
+	justify-items: center;
 }
