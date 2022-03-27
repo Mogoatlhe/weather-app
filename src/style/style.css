@@ -39,3 +39,9 @@ body.loader {
 #weather-div {
 	background-color: var(--light-grey);
 }
+
+#icon-details-div {
+	width: 10%;
+	height: 30vh;
+	border: red 1px solid;
+}

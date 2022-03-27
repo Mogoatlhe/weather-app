@@ -1,7 +1,7 @@
 import Element from "./element";
 
 export default class Div extends Element {
-	constructor(className, attr = []) {
+	constructor(attr = [], className = undefined) {
 		super("div", attr, className);
 	}
 
