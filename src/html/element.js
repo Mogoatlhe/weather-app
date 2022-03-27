@@ -33,4 +33,8 @@ export default class Element {
 
 		this.#node.textContent = textContent;
 	}
+
+	getNode() {
+		return this.#node;
+	}
 }
