@@ -1,8 +1,10 @@
 {
+		"env": {
+			"browser": true
+		},
     "extends": [
         "airbnb",
-        "prettier",
-        "plugin:node/recommended"
+        "prettier"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
