@@ -1,0 +1,41 @@
+:root {
+	--light-grey: rgb(230, 230, 230);
+}
+
+html {
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+body.loader {
+	background-image: url("../images/loader.gif");
+}
+
+#content {
+	display: grid;
+}
+
+#location-div {
+	width: 100vw;
+	height: 70vh;
+	background-image: url("../images/location/pretoria-image.jpg");
+	background-size: cover;
+}
+
+#weather-div {
+	background-color: var(--light-grey);
+}
