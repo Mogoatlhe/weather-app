@@ -19,12 +19,12 @@ export default class Weather {
 		return this.#location;
 	}
 
-	async fetchWeather(icon, iconText) {
+	async fetchWeather(icon, iconText, temp, unit) {
 		try {
 			const childNodes = this.#removeChildNodes();
 			this.#bodyNode.classList.add("loader");
 			this.#weather = await fetch(
-				"https://api.openweathermap.org/data/2.5/weather?q=Brooklyn&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
+				"https://api.openweathermap.org/data/2.5/weather?q=London&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
 				{
 					mode: "cors",
 				}
@@ -40,12 +40,31 @@ export default class Weather {
 			icon.addAttributes([iconSrcAttr]);
 			iconText.setTextContent(this.#weather.weather[0].description);
 
+			if (unit === "celsius") {
+				this.setCelsius(temp);
+			} else {
+				this.setFahrenheit(temp);
+			}
+
 			this.#addChildren(childNodes);
-			this.#bodyNode.classList.remove("loader");
-			console.log(this.#weather.weather[0].description);
+			console.log(this.#weather.main);
 		} catch (e) {
 			console.log(e);
+		} finally {
+			this.#bodyNode.classList.remove("loader");
 		}
+	}
+
+	setCelsius(temp) {
+		const kelvin = this.#weather.main.temp;
+		const celsius = Math.round(kelvin - 273.15);
+		temp.setTextContent(celsius);
+	}
+
+	setFahrenheit(temp) {
+		const kelvin = this.#weather.main.temp;
+		const fahrenheit = Math.round(kelvin - 9 / 5 - 459.67);
+		temp.setTextContent(fahrenheit);
 	}
 
 	#removeChildNodes() {

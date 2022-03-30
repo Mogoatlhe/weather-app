@@ -20,7 +20,7 @@ export default class Element {
 			return;
 		}
 
-		if (!className(className.contains(" "))) {
+		if (!className.includes(" ")) {
 			this.#node.classList.add(className);
 			return;
 		}

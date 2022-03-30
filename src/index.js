@@ -4,7 +4,9 @@ import Attribute from "./html/attribute";
 import "./style/style.css";
 import Image from "./html/image";
 import Paragraph from "./html/paragraph";
+import Button from "./html/buttons";
 
+let unit;
 const content = document.getElementById("content");
 
 const locationDivIdAttr = new Attribute("id", "location-div");
@@ -33,14 +35,40 @@ const iconTextAttrArr = [iconTextIdAttr];
 const iconText = new Paragraph(iconTextAttrArr);
 const iconTextNode = iconText.getParagraph();
 
+const temperatureDivIdAttr = new Attribute("id", "temperature-div");
+const temperatureDivAttrArr = [temperatureDivIdAttr];
+const temperatureDiv = new Div(temperatureDivAttrArr);
+const temperatureDivNode = temperatureDiv.getDiv();
+temperatureDivNode.dataset.unit = "celsius";
+unit = temperatureDivNode.dataset.unit;
+
+const temperatureId = new Attribute("id", "temperature");
+const temperatureAttrArr = [temperatureId];
+const temperature = new Paragraph(temperatureAttrArr);
+const temperatureNode = temperature.getParagraph();
+
+const celsiusId = new Attribute("id", "celsius");
+const celsiusAttrArr = [celsiusId];
+const celsius = new Button(celsiusAttrArr, "\u2103", "selected-unit");
+const celsiusNode = celsius.getButton();
+
+const fahrenheitId = new Attribute("id", "fahrenheit");
+const fahrenheitAttrArr = [fahrenheitId];
+const fahrenheit = new Button(fahrenheitAttrArr, "\u2109", "unselected-unit");
+const fahrenheitNode = fahrenheit.getButton();
+
 const weather = new Weather();
-weather.fetchWeather(icon, iconText);
+weather.fetchWeather(icon, iconText, temperature, unit);
 locationDivNode.addEventListener("click", () => {
-	weather.fetchWeather(icon, iconText);
+	weather.fetchWeather(icon, iconText, temperature, unit);
 });
 
+temperatureDivNode.append(temperatureNode);
+temperatureDivNode.append(celsiusNode);
+temperatureDivNode.append(fahrenheitNode);
 iconDetailsDivNode.append(iconNode);
 iconDetailsDivNode.append(iconTextNode);
 weatherDivNode.append(iconDetailsDivNode);
+weatherDivNode.append(temperatureDivNode);
 content.append(locationDivNode);
 content.append(weatherDivNode);
