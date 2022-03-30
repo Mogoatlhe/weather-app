@@ -47,7 +47,7 @@ export default class Weather {
 			}
 
 			this.#addChildren(childNodes);
-			console.log(this.#weather.main);
+			console.log(this.#weather);
 		} catch (e) {
 			console.log(e);
 		} finally {

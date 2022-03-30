@@ -92,11 +92,6 @@ body.loader {
 	border: none;
 }
 
-#celsius:hover,
-#fahrenheit:hover {
-	transform: scale(1.1);
-}
-
 #celsius {
 	align-self: end;
 	margin-bottom: 5px;
@@ -112,6 +107,11 @@ body.loader {
 	border: 1px solid var(--selected-unit-color);
 	color: var(--selected-unit-color);
 	box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.unselected-unit:hover {
+	transform: scale(1.1);
+	cursor: pointer;
 }
 
 #fahrenheit {
