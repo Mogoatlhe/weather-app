@@ -6,7 +6,6 @@ import Image from "./html/image";
 import Paragraph from "./html/paragraph";
 import Button from "./html/buttons";
 
-let unit;
 const content = document.getElementById("content");
 
 const locationDivIdAttr = new Attribute("id", "location-div");
@@ -40,7 +39,7 @@ const temperatureDivAttrArr = [temperatureDivIdAttr];
 const temperatureDiv = new Div(temperatureDivAttrArr);
 const temperatureDivNode = temperatureDiv.getDiv();
 temperatureDivNode.dataset.unit = "celsius";
-unit = temperatureDivNode.dataset.unit;
+const { unit } = temperatureDivNode.dataset;
 
 const temperatureId = new Attribute("id", "temperature");
 const temperatureAttrArr = [temperatureId];
@@ -61,6 +60,14 @@ const weather = new Weather();
 weather.fetchWeather(icon, iconText, temperature, unit);
 locationDivNode.addEventListener("click", () => {
 	weather.fetchWeather(icon, iconText, temperature, unit);
+});
+
+const unitBtns = [celsiusNode, fahrenheitNode];
+
+unitBtns.forEach((btn) => {
+	btn.addEventListener("click", () => {
+		weather.changeUnit(btn, temperatureDivNode, temperature);
+	});
 });
 
 temperatureDivNode.append(temperatureNode);
