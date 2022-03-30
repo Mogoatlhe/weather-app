@@ -1,10 +1,13 @@
+import "./style/style.css";
 import Div from "./html/div";
+import WindSymbol from "./images/extra-data-symbols/wind-symbol.png";
+import HumiditySymbol from "./images/extra-data-symbols/humidity-symbol.png";
+import PressureSymbol from "./images/extra-data-symbols/pressure-symbol.png";
+import Image from "./html/image";
+import Button from "./html/buttons";
 import Weather from "./weather/weather";
 import Attribute from "./html/attribute";
-import "./style/style.css";
-import Image from "./html/image";
 import Paragraph from "./html/paragraph";
-import Button from "./html/buttons";
 
 const content = document.getElementById("content");
 
@@ -56,6 +59,43 @@ const fahrenheitAttrArr = [fahrenheitId];
 const fahrenheit = new Button(fahrenheitAttrArr, "\u2109", "unselected-unit");
 const fahrenheitNode = fahrenheit.getButton();
 
+const extraDataDivId = new Attribute("id", "extra-data-div");
+const extraDataAttrArr = [extraDataDivId];
+const extraDataDiv = new Div(extraDataAttrArr);
+const extraDataDivNode = extraDataDiv.getDiv();
+
+const symbolIds = ["wind-symbol", "humidity-symbol", "pressure-symbol"];
+const symbols = [WindSymbol, HumiditySymbol, PressureSymbol];
+const symbolAlts = ["wind symbol", "humidity symbol", "pressure symbol"];
+
+(() => {
+	for (let i = 0; i < 3; i += 1) {
+		const itemDiv = new Div([], "extra-data-item-div");
+
+		const symbolId = new Attribute("id", symbolIds[i]);
+		const symbolSrc = new Attribute("src", symbols[i]);
+		const symbolAlt = new Attribute("alt", symbolAlts[i]);
+		const symbolAttrArr = [symbolId, symbolSrc, symbolAlt];
+		const symbol = new Image(symbolAttrArr, "symbol");
+
+		const itemName = new Paragraph([], symbolAlts[i].split(" ")[0]);
+		const itemNameNode = itemName.getParagraph();
+
+		const itemStatId = new Attribute(
+			"id",
+			`${symbolAlts[i].split(" ")[0]}-stat`
+		);
+		const itemStat = new Paragraph([itemStatId]);
+
+		const itemDivNode = itemDiv.getDiv();
+
+		itemDivNode.append(symbol.getImage());
+		itemDivNode.append(itemNameNode);
+		itemDivNode.append(itemStat.getParagraph());
+		extraDataDivNode.append(itemDivNode);
+	}
+})();
+
 const weather = new Weather();
 weather.fetchWeather(icon, iconText, temperature, unit);
 locationDivNode.addEventListener("click", () => {
@@ -77,5 +117,6 @@ iconDetailsDivNode.append(iconNode);
 iconDetailsDivNode.append(iconTextNode);
 weatherDivNode.append(iconDetailsDivNode);
 weatherDivNode.append(temperatureDivNode);
+weatherDivNode.append(extraDataDivNode);
 content.append(locationDivNode);
 content.append(weatherDivNode);

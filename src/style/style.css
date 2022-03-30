@@ -4,6 +4,7 @@
 	--light-grey: rgb(227, 227, 227);
 	--adamina: "Adamina", serif;
 	--selected-unit-color: rgb(236, 110, 76);
+	--james-bond: rgb(0, 122, 255);
 }
 
 html {
@@ -42,27 +43,30 @@ body.loader {
 
 #weather-div {
 	display: grid;
-	grid-template-columns: 10% 20%;
+	grid-template-columns: 10% 22% 53%;
+	justify-content: space-around;
 	background-color: var(--light-grey);
 }
 
-#weather-icon {
-	background-color: transparent;
+#weather-div > * {
+	height: 35vh;
 }
 
 #icon-details-div {
-	height: 35vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
 
+#weather-icon {
+	background-color: transparent;
+}
+
 #temperature-div {
 	display: grid;
-	height: 35vh;
 	border: 1px solid #e6e6e6;
-	grid-template-columns: 75% 25%;
+	grid-template-columns: 5fr 1fr;
 	grid-template-rows: repeat(2, 50%);
 }
 
@@ -116,4 +120,31 @@ body.loader {
 
 #fahrenheit {
 	margin-top: 5px;
+}
+
+#extra-data-div {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.extra-data-item-div {
+	display: grid;
+	justify-items: center;
+	align-content: center;
+	gap: 15px;
+	font-family: var(--adamina);
+}
+
+.symbol {
+	width: 60px;
+}
+
+.extra-data-item-div *:nth-child(2) {
+	color: var(--selected-unit-color);
+	font-size: 1.2rem;
+}
+
+.extra-data-item-div *:nth-child(3) {
+	color: var(--james-bond);
+	font-size: 1.1rem;
 }

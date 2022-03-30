@@ -51,6 +51,7 @@ export default class Weather {
 		} catch (e) {
 			console.log(e);
 		} finally {
+			this.#setExtraItemData();
 			this.#bodyNode.classList.remove("loader");
 		}
 	}
@@ -59,6 +60,7 @@ export default class Weather {
 		const kelvin = this.#weather.main.temp;
 		const celsius = Math.round(kelvin - 273.15);
 		temp.setTextContent(celsius);
+		this.#setExtraItemData();
 	}
 
 	setFahrenheit(temp) {
@@ -106,5 +108,23 @@ export default class Weather {
 
 	#addChildren(children) {
 		[...children].forEach((child) => this.#bodyNode.append(child));
+	}
+
+	#setExtraItemData() {
+		if (document.getElementById("wind-stat") === null) {
+			return;
+		}
+
+		document.getElementById("wind-stat").textContent = `${
+			this.#weather.wind.speed
+		} m/s`;
+
+		document.getElementById("humidity-stat").textContent = `${
+			this.#weather.main.humidity
+		}%`;
+
+		document.getElementById("pressure-stat").textContent = `${
+			this.#weather.main.pressure
+		} hPa`;
 	}
 }
