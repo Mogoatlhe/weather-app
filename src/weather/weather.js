@@ -63,7 +63,7 @@ export default class Weather {
 
 	setFahrenheit(temp) {
 		const kelvin = this.#weather.main.temp;
-		const fahrenheit = Math.round(kelvin - 9 / 5 - 459.67);
+		const fahrenheit = Math.round(((kelvin - 273.15) * 9) / 5 + 32);
 		temp.setTextContent(fahrenheit);
 	}
 
