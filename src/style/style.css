@@ -62,7 +62,7 @@ body.loader {
 	display: grid;
 	height: 35vh;
 	border: 1px solid #e6e6e6;
-	grid-template-columns: repeat(2, 50%);
+	grid-template-columns: 75% 25%;
 	grid-template-rows: repeat(2, 50%);
 }
 

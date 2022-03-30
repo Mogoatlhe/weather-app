@@ -67,6 +67,32 @@ export default class Weather {
 		temp.setTextContent(fahrenheit);
 	}
 
+	changeUnit(btn, temperatureDivNode, temp) {
+		let otherBtn;
+		const id = btn.getAttribute("id");
+
+		if (temperatureDivNode.dataset.unit === id) {
+			return;
+		}
+
+		btn.classList.add("selected-unit");
+		btn.classList.remove("unselected-unit");
+
+		if (btn.nextSibling !== null) {
+			otherBtn = btn.nextSibling;
+			this.setCelsius(temp);
+		} else {
+			otherBtn = btn.previousSibling;
+			this.setFahrenheit(temp);
+		}
+
+		otherBtn.classList.remove("selected-unit");
+		otherBtn.classList.add("unselected-unit");
+
+		// eslint-disable-next-line no-param-reassign
+		temperatureDivNode.dataset.unit = id;
+	}
+
 	#removeChildNodes() {
 		const children = this.#bodyNode.childNodes;
 		const childNodes = [];
