@@ -19,37 +19,17 @@ export default class Weather {
 		return this.#location;
 	}
 
-	async fetchWeather(icon, iconText, temp, unit) {
+	fetchWeather(icon, iconText, temp, unit, location) {
 		try {
-			const childNodes = this.#removeChildNodes();
 			this.#bodyNode.classList.add("loader");
-			this.#weather = await fetch(
-				"https://api.openweathermap.org/data/2.5/weather?q=London&APPID=cdb642150b8871cb21adf69e7bd3ddd6",
-				{
-					mode: "cors",
-				}
-			);
 
-			this.#weather = await this.#weather.json();
-
-			const iconId = this.#weather.weather[0].icon;
-			const iconSrcAttr = new Attribute(
-				"src",
-				` http://openweathermap.org/img/wn/${iconId}@2x.png`
-			);
-			icon.addAttributes([iconSrcAttr]);
-			iconText.setTextContent(this.#weather.weather[0].description);
-
-			if (unit === "celsius") {
-				this.setCelsius(temp);
-			} else {
-				this.setFahrenheit(temp);
-			}
-
-			this.#addChildren(childNodes);
-			console.log(this.#weather);
+			this.#getWeather(location, icon, iconText, temp, unit);
+			this.#location = location;
 		} catch (e) {
 			console.log(e);
+			this.#location =
+				this.#location === undefined ? "Pretoria" : this.#location;
+			this.#getWeather(this.#location, icon, iconText, temp, unit);
 		} finally {
 			this.#setExtraItemData();
 			this.#bodyNode.classList.remove("loader");
@@ -93,6 +73,45 @@ export default class Weather {
 
 		// eslint-disable-next-line no-param-reassign
 		temperatureDivNode.dataset.unit = id;
+	}
+
+	async #getWeather(location, icon, iconText, temp, unit) {
+		const childNodes = this.#removeChildNodes();
+
+		this.#weather = await fetch(
+			`https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=cdb642150b8871cb21adf69e7bd3ddd6`,
+			{
+				mode: "cors",
+			}
+		)
+			.then(async (weather) => {
+				if (!weather.ok) {
+					throw weather.statusText;
+				}
+
+				this.#weather = await weather.json();
+				if (this.#weather.message !== undefined) {
+					throw this.#weather.message;
+				}
+
+				const iconId = this.#weather.weather[0].icon;
+				const iconSrcAttr = new Attribute(
+					"src",
+					` http://openweathermap.org/img/wn/${iconId}@2x.png`
+				);
+
+				icon.addAttributes([iconSrcAttr]);
+				iconText.setTextContent(this.#weather.weather[0].description);
+
+				if (unit === "celsius") {
+					this.setCelsius(temp);
+				} else {
+					this.setFahrenheit(temp);
+				}
+
+				this.#addChildren(childNodes);
+			})
+			.catch((e) => console.log(e));
 	}
 
 	#removeChildNodes() {

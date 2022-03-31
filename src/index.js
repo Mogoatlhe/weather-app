@@ -8,6 +8,9 @@ import Button from "./html/buttons";
 import Weather from "./weather/weather";
 import Attribute from "./html/attribute";
 import Paragraph from "./html/paragraph";
+import Form from "./html/form";
+import Label from "./html/label";
+import Element from "./html/element";
 
 const content = document.getElementById("content");
 
@@ -96,10 +99,36 @@ const symbolAlts = ["wind symbol", "humidity symbol", "pressure symbol"];
 	}
 })();
 
+const formMethod = new Attribute("method", "get");
+const formAction = new Attribute("action", "./");
+const formAttrArr = [formMethod, formAction];
+const form = new Form(formAttrArr);
+const formNode = form.getForm();
+
+const labelFor = new Attribute("for", "location-input");
+const labelAttrArr = [labelFor];
+const label = new Label("Get weather for: ", labelAttrArr);
+const labelNode = label.getLabel();
+
+const inputId = new Attribute("id", "location-input");
+const inputType = new Attribute("type", "text");
+const inputPlaceHolder = new Attribute("placeholder", "Enter a city");
+const inputAttrArr = [inputId, inputType, inputPlaceHolder];
+const input = new Element("input", inputAttrArr);
+const inputNode = input.getNode();
+
+const submitId = new Attribute("id", "submit");
+const submitValue = new Attribute("value", "submit");
+const submitType = new Attribute("type", "submit");
+const submitAttrArr = [submitId, submitValue, submitType];
+const submit = new Element("input", submitAttrArr);
+const submitNode = submit.getNode();
+
 const weather = new Weather();
 weather.fetchWeather(icon, iconText, temperature, unit);
-locationDivNode.addEventListener("click", () => {
-	weather.fetchWeather(icon, iconText, temperature, unit);
+submitNode.addEventListener("click", () => {
+	const location = inputNode.value;
+	weather.fetchWeather(icon, iconText, temperature, unit, location);
 });
 
 const unitBtns = [celsiusNode, fahrenheitNode];
@@ -110,6 +139,10 @@ unitBtns.forEach((btn) => {
 	});
 });
 
+formNode.append(labelNode);
+formNode.append(inputNode);
+formNode.append(submitNode);
+locationDivNode.append(formNode);
 temperatureDivNode.append(temperatureNode);
 temperatureDivNode.append(celsiusNode);
 temperatureDivNode.append(fahrenheitNode);
