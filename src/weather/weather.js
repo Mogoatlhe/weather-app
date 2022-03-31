@@ -1,4 +1,5 @@
 import "regenerator-runtime/runtime";
+import Swal from "sweetalert2";
 import Attribute from "../html/attribute";
 
 export default class Weather {
@@ -28,9 +29,13 @@ export default class Weather {
 			await this.#getWeather(location, icon, iconText, temp, unit);
 			this.#location = location;
 		} catch (e) {
-			console.log(e);
 			this.#location =
 				this.#location === undefined ? "Pretoria" : this.#location;
+			Swal.fire({
+				icon: "error",
+				title: `${e}: Invalid city name`,
+				text: `showing ${this.#location} weather instead`,
+			});
 			await this.#getWeather(this.#location, icon, iconText, temp, unit);
 		} finally {
 			this.#setExtraItemData();

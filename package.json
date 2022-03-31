@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.9",
+    "sweetalert2": "^11.4.8"
   }
 }
