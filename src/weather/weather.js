@@ -5,6 +5,7 @@ export default class Weather {
 	#weather;
 	#bodyNode;
 	#location;
+	#childNodes;
 
 	constructor(location) {
 		this.#location = location;
@@ -19,17 +20,18 @@ export default class Weather {
 		return this.#location;
 	}
 
-	fetchWeather(icon, iconText, temp, unit, location) {
+	async fetchWeather(icon, iconText, temp, unit, location) {
 		try {
 			this.#bodyNode.classList.add("loader");
 
-			this.#getWeather(location, icon, iconText, temp, unit);
+			this.#childNodes = this.#removeChildNodes();
+			await this.#getWeather(location, icon, iconText, temp, unit);
 			this.#location = location;
 		} catch (e) {
 			console.log(e);
 			this.#location =
 				this.#location === undefined ? "Pretoria" : this.#location;
-			this.#getWeather(this.#location, icon, iconText, temp, unit);
+			await this.#getWeather(this.#location, icon, iconText, temp, unit);
 		} finally {
 			this.#setExtraItemData();
 			this.#bodyNode.classList.remove("loader");
@@ -76,42 +78,39 @@ export default class Weather {
 	}
 
 	async #getWeather(location, icon, iconText, temp, unit) {
-		const childNodes = this.#removeChildNodes();
-
 		this.#weather = await fetch(
 			`https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=cdb642150b8871cb21adf69e7bd3ddd6`,
 			{
 				mode: "cors",
 			}
-		)
-			.then(async (weather) => {
-				if (!weather.ok) {
-					throw weather.statusText;
-				}
+		);
 
-				this.#weather = await weather.json();
-				if (this.#weather.message !== undefined) {
-					throw this.#weather.message;
-				}
+		if (this.#weather.status !== 200) {
+			throw this.#weather.statusText;
+		}
 
-				const iconId = this.#weather.weather[0].icon;
-				const iconSrcAttr = new Attribute(
-					"src",
-					` http://openweathermap.org/img/wn/${iconId}@2x.png`
-				);
+		this.#weather = await this.#weather.json();
 
-				icon.addAttributes([iconSrcAttr]);
-				iconText.setTextContent(this.#weather.weather[0].description);
+		if (this.#weather.message !== undefined) {
+			throw this.#weather.message;
+		}
 
-				if (unit === "celsius") {
-					this.setCelsius(temp);
-				} else {
-					this.setFahrenheit(temp);
-				}
+		const iconId = this.#weather.weather[0].icon;
+		const iconSrcAttr = new Attribute(
+			"src",
+			` http://openweathermap.org/img/wn/${iconId}@2x.png`
+		);
 
-				this.#addChildren(childNodes);
-			})
-			.catch((e) => console.log(e));
+		icon.addAttributes([iconSrcAttr]);
+		iconText.setTextContent(this.#weather.weather[0].description);
+
+		if (unit === "celsius") {
+			this.setCelsius(temp);
+		} else {
+			this.setFahrenheit(temp);
+		}
+
+		this.#addChildren(this.#childNodes);
 	}
 
 	#removeChildNodes() {
