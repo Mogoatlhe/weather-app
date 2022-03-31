@@ -31,11 +31,13 @@ export default class Weather {
 		} catch (e) {
 			this.#location =
 				this.#location === undefined ? "Pretoria" : this.#location;
+
 			Swal.fire({
 				icon: "error",
 				title: `${e}: Invalid city name`,
 				text: `showing ${this.#location} weather instead`,
 			});
+
 			await this.#getWeather(this.#location, icon, iconText, temp, unit);
 		} finally {
 			this.#setExtraItemData();

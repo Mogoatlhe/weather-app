@@ -45,7 +45,7 @@ const temperatureDivAttrArr = [temperatureDivIdAttr];
 const temperatureDiv = new Div(temperatureDivAttrArr);
 const temperatureDivNode = temperatureDiv.getDiv();
 temperatureDivNode.dataset.unit = "celsius";
-const { unit } = temperatureDivNode.dataset;
+let { unit } = temperatureDivNode.dataset;
 
 const temperatureId = new Attribute("id", "temperature");
 const temperatureAttrArr = [temperatureId];
@@ -129,6 +129,11 @@ weather.fetchWeather(icon, iconText, temperature, unit);
 submitNode.addEventListener("click", () => {
 	const location = inputNode.value;
 	weather.fetchWeather(icon, iconText, temperature, unit, location);
+
+	if (unit === "fahrenheit") {
+		celsiusNode.click();
+		fahrenheitNode.click();
+	}
 });
 
 const unitBtns = [celsiusNode, fahrenheitNode];
@@ -136,6 +141,7 @@ const unitBtns = [celsiusNode, fahrenheitNode];
 unitBtns.forEach((btn) => {
 	btn.addEventListener("click", () => {
 		weather.changeUnit(btn, temperatureDivNode, temperature);
+		unit = btn.getAttribute("id");
 	});
 });
 
